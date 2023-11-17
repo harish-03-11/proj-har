@@ -1,0 +1,31 @@
+import json
+import boto3
+
+def lambda_handler(event, context):
+    # Create a Comprehend client
+    comprehend_client = boto3.client('comprehend')
+    
+    # Extract input text from the event
+    input_text = event.get('input_text', 'Default Text')
+
+    # Detect sentiment
+    response = comprehend_client.detect_sentiment(
+        Text=input_text,
+        LanguageCode='en'  # or other language codes
+    )
+    print("fghsrhtsfh",response)
+    # Extract sentiment and sentiment score from the Comprehend response
+    sentiment = response['Sentiment']
+    dummy = response['Sentiment']
+    x = dummy.title()
+    sentiment_score = response['SentimentScore'][x]
+
+    # Build the response dictionary
+    response_dict = {
+        'input_text': event,
+        'sentiment': sentiment,
+        'sentiment_score': sentiment_score
+    }
+
+    # Return the response as a JSON-formatted string
+    return response_dict
